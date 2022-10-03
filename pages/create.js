@@ -1,44 +1,63 @@
-import React, { useState, useEffect } from "react";
-import { ChevronRightIcon, CalendarDaysIcon, MapPinIcon } from "@heroicons/react/24/outline";
-import { FormInput } from "../component";
+import React, { useState, useEffect } from "react"
+import { useRouter } from "next/router"
+import {
+  ChevronRightIcon,
+  CalendarDaysIcon,
+  MapPinIcon,
+} from "@heroicons/react/24/outline"
+import { FormInput } from "../component"
 
-const initialState = { eventName: "", hostName: "", startDate: "", endDate: "", image: "", streetName: "" };
+const initialState = {
+  eventName: "",
+  hostName: "",
+  startDate: "",
+  endDate: "",
+  image: "",
+  streetName: "",
+}
 
 const CreateEvent = () => {
-  const [formDetails, setFormDetails] = useState(initialState);
-  const [loading, setLoading] = useState(false);
-  const [eventDetails, setEventDetails] = useState(null);
+  const router = useRouter()
+  const [formDetails, setFormDetails] = useState(initialState)
+  const [loading, setLoading] = useState(false)
+  const [eventDetails, setEventDetails] = useState(null)
 
   const handleChange = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
+    e.preventDefault()
+    const { name, value } = e.target
     setFormDetails({
       ...formDetails,
       [name]: value,
-    });
-  };
+    })
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const { eventName, hostName, startDate, endDate, image } = formDetails;
+    setLoading(true)
+    e.preventDefault()
+    const { eventName, hostName, startDate, endDate, image } = formDetails
 
     if (eventName && hostName && startDate && endDate && image) {
-      localStorage.setItem("eventDetails", JSON.stringify({ ...formDetails }));
+      localStorage.setItem("eventDetails", JSON.stringify({ ...formDetails }))
+      setFormDetails(initialState)
+      setLoading(false)
+     router.reload(window.location.pathname)
     }
-  };
+  }
 
   useEffect(() => {
     if (localStorage.getItem("eventDetails")) {
-      return setEventDetails(JSON.parse(localStorage.getItem("eventDetails")));
+      return setEventDetails(JSON.parse(localStorage.getItem("eventDetails")))
     }
-  }, []);
+  }, [eventDetails])
 
   return (
     <div className="bg-[#F6F2FF] h-screen flex items-center justify-center text-black">
       {eventDetails && eventDetails ? (
         <div className="flex justify-between items-start max-w-[80%] mx-auto">
           <div className="flex-1">
-            <h1 className="text-[48px] font-bold text-primary">{eventDetails?.eventName}</h1>
+            <h1 className="text-[48px] font-bold text-primary">
+              {eventDetails?.eventName}
+            </h1>
             <p>Hosted by {eventDetails?.hostName}</p>
 
             <div className="space-y-8">
@@ -48,9 +67,15 @@ const CreateEvent = () => {
                     <CalendarDaysIcon className="w-8" />
                   </div>
                   <div>
-                    <p className="text-primary font-bold">{eventDetails?.startDate}</p>
+                    <p className="text-primary font-bold">
+                      {eventDetails?.startDate}
+                    </p>
                     <p className="text-[#4F4F4F]">
-                      to <span className="font-semibold">{eventDetails?.endDate} </span>UTC +10
+                      to{" "}
+                      <span className="font-semibold">
+                        {eventDetails?.endDate}{" "}
+                      </span>
+                      UTC +10
                     </p>
                   </div>
                 </div>
@@ -78,7 +103,9 @@ const CreateEvent = () => {
         </div>
       ) : (
         <div className="">
-          <h1 className="text-primary">Yah! You have no event yet. Start by Creating one</h1>
+          <h1 className="text-primary">
+            Yah! You have no event yet. Start by Creating one
+          </h1>
           <img src="/event.png" className="w-60 mx-auto rounded-lg my-5" />
           <label
             htmlFor="my-modal-3"
@@ -89,13 +116,16 @@ const CreateEvent = () => {
 
           <input type="checkbox" id="my-modal-3" className="modal-toggle" />
           <div className="modal">
-            <div className="modal-box relative">
-              <label htmlFor="my-modal-3" className="btn btn-sm btn-circle absolute right-2 top-2">
+            <div className="modal-box relative overflow-hidden">
+              <label
+                htmlFor="my-modal-3"
+                className="btn btn-sm btn-circle absolute right-2 top-2"
+              >
                 ✕
               </label>
               <h3 className="text-lg font-bold mb-5">Create Event</h3>
               <form onSubmit={(e) => handleSubmit(e)}>
-                <div className="flex flex-col md:flex-row justify-between gap-4">
+                <div className="">
                   <FormInput
                     name="eventName"
                     label="Event Name"
@@ -111,7 +141,7 @@ const CreateEvent = () => {
                     formDetails={formDetails}
                   />
                 </div>
-
+        
                 <div className="flex flex-col md:flex-row justify-between gap-4 mt-5">
                   <FormInput
                     name="startDate"
@@ -129,6 +159,16 @@ const CreateEvent = () => {
                   />
                 </div>
 
+                <div>
+                  <FormInput
+                    name="streetName"
+                    label="Enter Street"
+                    handleChange={handleChange}
+                    type="text"
+                    formDetails={formDetails}
+                  />
+                </div>
+
                 <div className="mt-5">
                   <FormInput
                     name="image"
@@ -140,7 +180,12 @@ const CreateEvent = () => {
                 </div>
 
                 <div className="mt-10 text-center mx-auto">
-                  <button className={`${loading && "loading"} btn btn-block btn-primary`} type="submit">
+                  <button
+                    className={`${
+                      loading && "loading"
+                    } btn btn-block btn-primary`}
+                    type="submit"
+                  >
                     {loading ? "" : "Create Event"}
                   </button>
                 </div>
@@ -150,7 +195,7 @@ const CreateEvent = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default CreateEvent;
+export default CreateEvent
