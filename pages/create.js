@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronRightIcon, CalendarDaysIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { FormInput } from "../component";
 
-const initialState = { eventName: "", hostName: "", startDate: "", endDate: "", image: "" };
+const initialState = { eventName: "", hostName: "", startDate: "", endDate: "", image: "", streetName: "" };
 
 const CreateEvent = () => {
   const [formDetails, setFormDetails] = useState(initialState);
@@ -38,8 +38,8 @@ const CreateEvent = () => {
       {eventDetails && eventDetails ? (
         <div className="flex justify-between items-start max-w-[80%] mx-auto">
           <div className="flex-1">
-            <h1 className="text-[48px] font-bold text-primary">{formDetails.eventName}</h1>
-            <p>Hosted by {formDetails.hostName}</p>
+            <h1 className="text-[48px] font-bold text-primary">{eventDetails?.eventName}</h1>
+            <p>Hosted by {eventDetails?.hostName}</p>
 
             <div className="space-y-8">
               <div className="flex justify-between items-center">
@@ -48,9 +48,9 @@ const CreateEvent = () => {
                     <CalendarDaysIcon className="w-8" />
                   </div>
                   <div>
-                    <p className="text-primary font-bold">18 August 6:00PM</p>
+                    <p className="text-primary font-bold">{eventDetails?.startDate}</p>
                     <p className="text-[#4F4F4F]">
-                      to <span className="font-semibold">19 August 1:00PM </span>UTC +10
+                      to <span className="font-semibold">{eventDetails?.endDate} </span>UTC +10
                     </p>
                   </div>
                 </div>
