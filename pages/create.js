@@ -40,7 +40,7 @@ const CreateEvent = () => {
       localStorage.setItem("eventDetails", JSON.stringify({ ...formDetails }))
       setFormDetails(initialState)
       setLoading(false)
-     router.reload(window.location.pathname)
+      router.reload(window.location.pathname)
     }
   }
 
@@ -48,12 +48,12 @@ const CreateEvent = () => {
     if (localStorage.getItem("eventDetails")) {
       return setEventDetails(JSON.parse(localStorage.getItem("eventDetails")))
     }
-  }, [eventDetails])
+  }, [])
 
   return (
     <div className="bg-[#F6F2FF] h-screen flex items-center justify-center text-black">
       {eventDetails && eventDetails ? (
-        <div className="flex justify-between items-start max-w-[80%] mx-auto">
+        <div className="flex justify-between flex-col-reverse lg:flex-row items-start max-w-[80%] mx-auto lg:gap-10">
           <div className="flex-1">
             <h1 className="text-[48px] font-bold text-primary">
               {eventDetails?.eventName}
@@ -88,16 +88,22 @@ const CreateEvent = () => {
                     <MapPinIcon className="w-8" />
                   </div>
                   <div>
-                    <p className="text-primary font-bold">Street name</p>
-                    <p className="text-[#4F4F4F]">Suburb, State, Postcode</p>
+                    <p className="text-primary font-bold">Street</p>
+                    <p className="text-[#4F4F4F]">{eventDetails?.streetName}</p>
                   </div>
                 </div>
 
                 <ChevronRightIcon className="w-6 text-[#BDBDBD]" />
               </div>
+              {/* <label
+                htmlFor="my-modal-3"
+                className="btn modal-button mt-6 bg-gradient-to-r from-[#8456EC] via-purple-500 to-[#E87BF8] rounded-lg py-3 px-14 text-[#fff] mt-10"
+              >
+                create event
+              </label> */}
             </div>
           </div>
-          <div>
+          <div className="">
             <img src="/birthday.png" className="w-96" />
           </div>
         </div>
@@ -141,7 +147,7 @@ const CreateEvent = () => {
                     formDetails={formDetails}
                   />
                 </div>
-        
+
                 <div className="flex flex-col md:flex-row justify-between gap-4 mt-5">
                   <FormInput
                     name="startDate"
