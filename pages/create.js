@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ChevronRightIcon, CalendarDaysIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { FormInput } from "../component";
 
-const initialState = { eventName: "", hostName: "", startDate: "", endDate: "" };
+const initialState = { eventName: "", hostName: "", startDate: "", endDate: "", image: "" };
 
 const CreateEvent = () => {
   const [formDetails, setFormDetails] = useState(initialState);
@@ -20,7 +20,11 @@ const CreateEvent = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem("eventDetails", JSON.stringify({ ...formDetails }));
+    const { eventName, hostName, startDate, endDate, image } = formDetails;
+
+    if (eventName && hostName && startDate && endDate && image) {
+      localStorage.setItem("eventDetails", JSON.stringify({ ...formDetails }));
+    }
   };
 
   useEffect(() => {
@@ -30,7 +34,7 @@ const CreateEvent = () => {
   }, []);
 
   return (
-    <div className="bg-secondary-light h-screen flex items-center justify-center">
+    <div className="bg-[#F6F2FF] h-screen flex items-center justify-center text-black">
       {eventDetails && eventDetails ? (
         <div className="flex justify-between items-start max-w-[80%] mx-auto">
           <div className="flex-1">
@@ -73,10 +77,13 @@ const CreateEvent = () => {
           </div>
         </div>
       ) : (
-        <div className="text-center">
-          <h1>Yah! You have no event yet. Start by Creating one</h1>
+        <div className="">
+          <h1 className="text-primary">Yah! You have no event yet. Start by Creating one</h1>
           <img src="/event.png" className="w-60 mx-auto rounded-lg my-5" />
-          <label htmlFor="my-modal-3" className="btn modal-button mt-6">
+          <label
+            htmlFor="my-modal-3"
+            className="btn modal-button mt-6 bg-gradient-to-r from-[#8456EC] via-purple-500 to-[#E87BF8] rounded-lg py-3 px-14 text-[#fff] mt-10"
+          >
             create event
           </label>
 
@@ -88,7 +95,7 @@ const CreateEvent = () => {
               </label>
               <h3 className="text-lg font-bold mb-5">Create Event</h3>
               <form onSubmit={(e) => handleSubmit(e)}>
-                <div className="flex justify-between gap-4">
+                <div className="flex flex-col md:flex-row justify-between gap-4">
                   <FormInput
                     name="eventName"
                     label="Event Name"
@@ -105,7 +112,7 @@ const CreateEvent = () => {
                   />
                 </div>
 
-                <div className="flex justify-between gap-4 mt-5">
+                <div className="flex flex-col md:flex-row justify-between gap-4 mt-5">
                   <FormInput
                     name="startDate"
                     label="Start Date"
@@ -115,14 +122,24 @@ const CreateEvent = () => {
                   />
                   <FormInput
                     name="endDate"
-                    label="endDate"
+                    label="End Date"
                     handleChange={handleChange}
                     type="date"
                     formDetails={formDetails}
                   />
                 </div>
 
-                <div className="mt-10">
+                <div className="mt-5">
+                  <FormInput
+                    name="image"
+                    label="Add event image"
+                    handleChange={handleChange}
+                    type="file"
+                    formDetails={formDetails}
+                  />
+                </div>
+
+                <div className="mt-10 text-center mx-auto">
                   <button className={`${loading && "loading"} btn btn-block btn-primary`} type="submit">
                     {loading ? "" : "Create Event"}
                   </button>

@@ -5,7 +5,7 @@ const FormInput = ({ label, type, name, handleChange, value, formDetails, disabl
     <div className="flex flex-col mb-4 w-full">
       <label className="text-sm text-gray-800 mb-2 inline-block">{label}</label>
       <input
-        className="text-black input input-bordered input-primary focus:outline-offset-0 focus:outline-1 disabled:bg-[#ececec] disabled:text-black"
+        className="text-black input input-bordered input-primary focus:outline-offset-0 focus:outline-1"
         type={type}
         name={name}
         onChange={handleChange}
